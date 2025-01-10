@@ -16,14 +16,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
+
+		 // CLAVES del CONTACTLIST 
+
+			isEdit: false,
 			contacts: [],
+			formData: {
+				name:"",
+				phone:"",
+				email:"",
+				address:"",
+				id: ""
+			}
 		},
+
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -50,8 +61,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
-			
-
 			//// CONTACTLIST FUNCIONES
 
 			 // Leer los contactos en la base de datos
@@ -70,11 +79,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				setStore({contacts: data.contacts})
-		
 			},
+			// Agregar contactos
+			addNewContact: async () => {
 
-			// ELIMINAR CONTCTOS
+				const formContactInfo = getStore().formData;
+		
+				const uri = `${urlBase}`;
+		
+				const options = { 
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(formContactInfo)
+				}
+		
+				const response = await fetch(uri,options);
+		
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText)
+					return
+				}
+				getStore().setStore({
+					...store,
+					formData: {
+						name: "",
+						phone: "",
+						email: "",
+						address: ""
+					}
+				})
 
+				getActions().getContacts();
+			},
+			// ELIMINAR CONTACTOS
 			 removeContact: async (id) => {
 
 				const uri = `${urlBase}/${id}`;
@@ -90,9 +129,61 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				getActions().getContacts();
-			}
+			},
+	
+			/// FORMULARIO AGREGAR CONTACTOS 
+			handleChange: (e) => {
+				const store = getStore();
+				setStore({
+					...store,
+					formData: {
+						...store.formData,
+						[e.target.name]: e.target.value,
+					},
+				});
+			},
+			
+			// Modificar contactos
+			editContact: async (id) => {
 
-		}
+				const formContactInfo = getStore().formData;
+
+				const uri = `${urlBase}/${id}`;
+		
+				const options = { 
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(formContactInfo),
+				}
+		
+				const response = await fetch(uri,options);
+		
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText)
+					return
+				}
+		
+			},
+
+			isEdit: false
+		},
+
+		setEditContact: (contact) => {
+			const store = getStore();
+			setStore({
+				...store,
+				formData: {
+					name: contact.name,
+					phone: contact.phone,
+					email: contact.email,
+					address: contact.address,
+					id: contact.id, // Asegúrate de incluir el id
+				},
+				isEdit: true,
+			});
+		},
 	};
 };
 
