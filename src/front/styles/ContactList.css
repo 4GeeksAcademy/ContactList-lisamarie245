@@ -1,0 +1,8 @@
+img { 
+    height: 150px;
+    width: 150px;
+    overflow: hidden;
+    margin-left: 15%;
+    border-radius: 50%;
+    background-size: cover;
+}
