@@ -7,10 +7,10 @@ export const ContactList = () => {
 
     const { store, actions } = useContext(Context);
 
-    // const editContact = () => {
-    //     const edit = getStore()
-    //     setStore({isEdit : true})
-    // }
+    const handleEditClick = (contact) => {
+        actions.setCurrentContact(contact);
+        Navigate(`/EditContact/${contact.id}`);
+    };
 
 
     useEffect(() => {
@@ -37,8 +37,13 @@ export const ContactList = () => {
                                     <div className="cardHeader d-flex justify-content-between">
                                         <h5 className="card-title">{item.name}</h5>
                                         <div className="Emoji d-flex">
-                                        <Link to="/AddContact" style={{ textDecoration: 'none' }}> <span onClick={() => actions.setEditContact(item)}><button type="button" className="btn btn-link text-danger">
-                                                <i className="fas fa-edit mx-2 text-primary"></i></button></span> </Link>
+                                            <Link to="/EditContact/:contactId" style={{ textDecoration: 'none' }}>
+                                                <span onClick={() => handleEditClick(item)}>
+                                                    <button type="button" className="btn btn-link text-danger">
+                                                        <i className="fas fa-edit mx-2 text-primary"></i>
+                                                    </button>
+                                                </span>
+                                            </Link>
                                             <span onClick={() => actions.removeContact(item.id)}><button type="button" className="btn btn-link text-danger">
                                                 <i className="fas fa-trash-alt"></i>
                                             </button></span>

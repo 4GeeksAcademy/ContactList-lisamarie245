@@ -18,8 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 
 		 // CLAVES del CONTACTLIST 
-
-			isEdit: false,
+		 currentContact: {},
 			contacts: [],
 			formData: {
 				name:"",
@@ -64,7 +63,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			//// CONTACTLIST FUNCIONES
 
 			 // Leer los contactos en la base de datos
-			 getContacts: async () => {
+			getContacts: async () => {
 				const uri = `${urlBase}`;
 		
 				const options = {
@@ -101,8 +100,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("error:", response.status, response.statusText)
 					return
 				}
-				getStore().setStore({
-					...store,
+				setStore({
 					formData: {
 						name: "",
 						phone: "",
@@ -110,8 +108,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						address: ""
 					}
 				})
-
-				getActions().getContacts();
 			},
 			// ELIMINAR CONTACTOS
 			 removeContact: async (id) => {
@@ -142,11 +138,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 				});
 			},
-			
+			setCurrentContact: (item) => {setStore({currentContact: item})},
 			// Modificar contactos
-			editContact: async (id) => {
+			editContact: async (dataContact, id) => {
 
-				const formContactInfo = getStore().formData;
 
 				const uri = `${urlBase}/${id}`;
 		
@@ -155,7 +150,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: {
 						"Content-Type": "application/json"
 					},
-					body: JSON.stringify(formContactInfo),
+					body: JSON.stringify(dataContact),
 				}
 		
 				const response = await fetch(uri,options);
@@ -164,26 +159,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("error:", response.status, response.statusText)
 					return
 				}
-		
+				getActions().getContacts();
+				getActions().setCurrentContact({})
 			},
 
-			isEdit: false
+			
+			
 		},
 
-		setEditContact: (contact) => {
-			const store = getStore();
-			setStore({
-				...store,
-				formData: {
-					name: contact.name,
-					phone: contact.phone,
-					email: contact.email,
-					address: contact.address,
-					id: contact.id, // Asegúrate de incluir el id
-				},
-				isEdit: true,
-			});
-		},
+		
 	};
 };
 
