@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 
 export const Characters = () => {
 
-    const { store } = useContext(Context)
+    const { store, actions } = useContext(Context)
 
     return (
         <div className="container text-center mt-5 bg-dark">
@@ -16,17 +16,18 @@ export const Characters = () => {
                             <img
                                 src={`https://starwars-visualguide.com/assets/img/characters/${index + 1}.jpg`}
                                 className="rounded mx-auto d-block"
-                                alt="https://starwars-visualguide.com/assets/img/big-placeholder.jpg"
+                                alt={item.name}
+                                onError={actions.handleImageError}
                             />
                             <div className="card-body">
                                 <h5 className="card-title">{item.name}</h5>
                                 <div className="card-buttons d-flex justify-content-between">
-                                    <Link to="#" className="btn btn-secondary">
+                                    <Link to={`/CardCharacters/${item.uid}`} className="btn btn-secondary">
                                         Details
                                     </Link>
                                     <button type="button" className="btn btn-outline-warning">
                                         <i className="far fa-heart"></i>
-                                    
+
                                     </button>
                                 </div>
                             </div>

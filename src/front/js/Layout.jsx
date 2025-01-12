@@ -21,8 +21,11 @@ import { Error404 } from "./pages/Error404.jsx";
 
 //starwars 
 import { Characters } from "./component/Characters.jsx";
+import { CardCharacters } from "./component/CardCharacters.jsx";
 import { Planets } from "./component/Planets.jsx";
-import { StarShips } from "./component/StarShips.jsx";
+import { CardPlanets } from "./component/CardPlanets.jsx";
+import { Ships } from "./component/Ships.jsx";
+import { CardShips } from "./component/CardShips.jsx";
 
 
 //create your first component
@@ -45,9 +48,15 @@ const Layout = () => {
                         <Route element={<EditContact />} path="/EditContact/:contactId" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404 />}  path="*"/>
+
+                        {/* ///// STARWARS WEBSITES ///  */}
+
                         <Route element={<Characters />} path="/Characters" /> 
+                        <Route element={<CardCharacters />} path="/CardCharacters/:id" />
                         <Route element={<Planets/>} path="/Planets" /> 
-                        <Route element={<StarShips/>} path="/StarShips" /> 
+                        <Route element={<CardPlanets/>} path="/CardPlanets/:id" /> 
+                        <Route element={<Ships/>} path="/Ships" /> 
+                        <Route element={<CardShips/>} path="/CardShips/:id" /> 
                     </Routes>
                     <Footer />
                 </ScrollToTop>

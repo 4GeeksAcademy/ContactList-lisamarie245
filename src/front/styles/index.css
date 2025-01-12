@@ -1,3 +1,23 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar, .footer {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    background: rgb(33, 37, 37);
+}
+#app {
+    background: rgb(29, 28, 28);
+}
+
+#monica-content-root {
+    background: rgb(33, 37, 37);
+
+}
