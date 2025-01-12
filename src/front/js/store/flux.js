@@ -33,7 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			urlBase: 'https://www.swapi.tech/api/',
 			starPlanets: [],
 			starCharacters: [],
-			starships: [],
+			starWarShips: [],
 
 		},
 
@@ -209,7 +209,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('localStarplanets', JSON.stringify(data.results))
 
 			},
+			getStarShips: async () => {
 
+				const uri = `${urlBase}/starships`;
+
+				const options = {
+					method: "GET"
+				}
+
+				const response = await fetch(uri,options);
+
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText)
+					return
+				}
+
+				const data = await response.json();
+				setStore({starWarShips: data.results})
+				localStorage.setItem('localStarShips', JSON.stringify(data.results))
+			},
 
 
 		},

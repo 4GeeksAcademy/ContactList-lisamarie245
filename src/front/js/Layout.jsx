@@ -22,6 +22,7 @@ import { Error404 } from "./pages/Error404.jsx";
 //starwars 
 import { Characters } from "./component/Characters.jsx";
 import { Planets } from "./component/Planets.jsx";
+import { StarShips } from "./component/StarShips.jsx";
 
 
 //create your first component
@@ -46,6 +47,7 @@ const Layout = () => {
                         <Route element={<Error404 />}  path="*"/>
                         <Route element={<Characters />} path="/Characters" /> 
                         <Route element={<Planets/>} path="/Planets" /> 
+                        <Route element={<StarShips/>} path="/StarShips" /> 
                     </Routes>
                     <Footer />
                 </ScrollToTop>

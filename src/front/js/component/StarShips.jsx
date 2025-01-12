@@ -1,23 +1,22 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import "./Characters.css";
 import { Context } from "../store/appContext";
 
-export const Planets = () => {
+export const StarShips = () => {
 
-    const { store} = useContext(Context);
+    const { store } = useContext(Context)
 
     return (
-        <div className="container text-center mt-5 bg-dark">
-            <h1 className="text-light text-center pt-4">Planets</h1>
+        <div className="container text-center mt-5 bg-dark container-fluid d-flex justify-content-between mx-md-4 mt-4 mb-1">
+            <h1 className="text-light text-center pt-4">StarShips</h1>
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
-                {store.starPlanets.map((item, index) => (
+                {store.starWarShip.map((item, index) => (
                     <div className="col" key={index}>
                         <div className="card h-100 custom-card">
                             <img
-                                src={`https://starwars-visualguide.com/assets/img/planets/${index + 1}.jpg`}
+                                src={`https://starwars-visualguide.com/assets/img/starships/${index + 1}.jpg`}
                                 className="rounded mx-auto d-block"
-                                alt={item.name}
+                                alt="https://starwars-visualguide.com/assets/img/big-placeholder.jpg"
                             />
                             <div className="card-body">
                                 <h5 className="card-title">{item.name}</h5>
@@ -27,6 +26,7 @@ export const Planets = () => {
                                     </Link>
                                     <button type="button" className="btn btn-outline-warning">
                                         <i className="far fa-heart"></i>
+
                                     </button>
                                 </div>
                             </div>

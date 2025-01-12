@@ -9,7 +9,7 @@ export const Characters = () => {
     return (
         <div className="container text-center mt-5 bg-dark">
             <h1 className="text-light text-center pt-4">Characters</h1>
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
                 {store.starCharacters.map((item, index) => (
                     <div className="col" key={index}>
                         <div className="card h-100 custom-card">
@@ -26,6 +26,7 @@ export const Characters = () => {
                                     </Link>
                                     <button type="button" className="btn btn-outline-warning">
                                         <i className="far fa-heart"></i>
+                                    
                                     </button>
                                 </div>
                             </div>
