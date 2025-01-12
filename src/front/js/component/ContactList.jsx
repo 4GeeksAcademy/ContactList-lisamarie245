@@ -20,9 +20,9 @@ export const ContactList = () => {
     // codigo de las tarjetas 
 
     return (
-        <div className="container mt-5 col-10">
+        <div className="container mt-5 col-10 bg-dark">
             <div className="">
-                <Link to="/AddContact" style={{ textDecoration: 'none' }}> <button type="button" className="btn btn-success mb-3 d-flex justify-contect-end">Add new contact</button></Link>
+                <div className="d-flex justify-content-end"><Link to="/AddContact" style={{ textDecoration: 'none' }}> <button type="button" className="btn btn-success mb-3 d-flex justify-contect-end">Add new contact</button></Link></div>
 
                 {/* Crear las tarjetas con la info de los contactos  */}
 
@@ -30,7 +30,7 @@ export const ContactList = () => {
                     <div className="card mb-3" key={index}>
                         <div className="row g-0">
                             <div className="col-md-4">
-                                <img src="https://i.imgur.com/km8w6cm.jpeg" className=" img-fluid rounded-circle mt-3" alt="..." />
+                                <img src="https://i.imgur.com/oP3GDGv.jpeg" className=" img-thumbnail mt-3" alt="..." />
                             </div>
                             <div className="col-md-8">
                                 <div className="card-body">
