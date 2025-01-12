@@ -14,16 +14,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 					title: "SECOND",
 					background: "white",
 					initial: "white"
-				}
+				},
 			],
+
+		 // CLAVES del CONTACTLIST 
+		    currentContact: {},
 			contacts: [],
+			formData: {
+				name:"",
+				phone:"",
+				email:"",
+				address:"",
+				id: ""
+			},
+
+			/////// STARWARS VARIABLES /////////
+
+			urlBase: 'https://www.swapi.tech/api/',
+			starPlanets: [],
+			starCharacters: [],
+			starships: [],
+
 		},
+
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -50,12 +68,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
-			
-
 			//// CONTACTLIST FUNCIONES
 
 			 // Leer los contactos en la base de datos
-			 getContacts: async () => {
+			getContacts: async () => {
 				const uri = `${urlBase}`;
 		
 				const options = {
@@ -70,11 +86,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				const data = await response.json();
 				setStore({contacts: data.contacts})
-		
 			},
+			// Agregar contactos
+			addNewContact: async () => {
 
-			// ELIMINAR CONTCTOS
-
+				const formContactInfo = getStore().formData;
+		
+				const uri = `${urlBase}`;
+		
+				const options = { 
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(formContactInfo)
+				}
+		
+				const response = await fetch(uri,options);
+		
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText)
+					return
+				}
+				setStore({
+					formData: {
+						name: "",
+						phone: "",
+						email: "",
+						address: ""
+					}
+				})
+			},
+			// ELIMINAR CONTACTOS
 			 removeContact: async (id) => {
 
 				const uri = `${urlBase}/${id}`;
@@ -90,9 +133,88 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				getActions().getContacts();
-			}
+			},
+	
+			/// FORMULARIO AGREGAR CONTACTOS 
+			handleChange: (e) => {
+				const store = getStore();
+				setStore({
+					...store,
+					formData: {
+						...store.formData,
+						[e.target.name]: e.target.value,
+					},
+				});
+			},
+			setCurrentContact: (item) => {setStore({currentContact: item})},
+			// Modificar contactos
+			editContact: async (dataContact, id) => {
 
-		}
+
+				const uri = `${urlBase}/${id}`;
+		
+				const options = { 
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataContact),
+				}
+		
+				const response = await fetch(uri,options);
+		
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText)
+					return
+				}
+				getActions().getContacts();
+				getActions().setCurrentContact({})
+			},
+
+			//// STARWARS DIRECTAMENTE! 
+			getCharacters: async () => {
+				const uri = `${getStore().urlBase}/people`;
+		
+				const options = {
+					method: "GET",
+				};
+		
+				const response = await fetch(uri, options);
+		
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				setStore({starCharacters: data.results});
+				localStorage.setItem('localStarCharacters', JSON.stringify(data.results))
+
+			},
+			
+			getStarPlanets: async () => {
+				const uri = `${getStore().urlBase}/planets`;
+		
+				const options = {
+					method: "GET",
+				};
+		
+				const response = await fetch(uri, options);
+		
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				setStore({starPlanets: data.results})
+				localStorage.setItem('localStarplanets', JSON.stringify(data.results))
+
+			},
+
+
+
+		},
+
+		
 	};
 };
 
