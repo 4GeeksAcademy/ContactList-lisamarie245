@@ -14,11 +14,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					title: "SECOND",
 					background: "white",
 					initial: "white"
-				}
+				},
 			],
 
 		 // CLAVES del CONTACTLIST 
-		 currentContact: {},
+		    currentContact: {},
 			contacts: [],
 			formData: {
 				name:"",
@@ -26,7 +26,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				email:"",
 				address:"",
 				id: ""
-			}
+			},
+
+			/////// STARWARS VARIABLES /////////
+
+			urlBase: 'https://www.swapi.tech/api/',
+			starPlanets: [],
+			starCharacters: [],
+			starships: [],
+
 		},
 
 		actions: {
@@ -163,8 +171,47 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().setCurrentContact({})
 			},
 
+			//// STARWARS DIRECTAMENTE! 
+			getCharacters: async () => {
+				const uri = `${getStore().urlBase}/people`;
+		
+				const options = {
+					method: "GET",
+				};
+		
+				const response = await fetch(uri, options);
+		
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				setStore({starCharacters: data.results});
+				localStorage.setItem('localStarCharacters', JSON.stringify(data.results))
+
+			},
 			
-			
+			getStarPlanets: async () => {
+				const uri = `${getStore().urlBase}/planets`;
+		
+				const options = {
+					method: "GET",
+				};
+		
+				const response = await fetch(uri, options);
+		
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				setStore({starPlanets: data.results})
+				localStorage.setItem('localStarplanets', JSON.stringify(data.results))
+
+			},
+
+
+
 		},
 
 		

@@ -16,12 +16,14 @@ export const Navbar = () => {
 						<li className="nav-item">
 							<a className="nav-link active" aria-current="page" href="#">ContacList</a>
 						</li></Link>
+						<Link to="/Characters" style={{ textDecoration: 'none' }}>
 					<li className="nav-item">
-						<a className="nav-link" href="#">Features</a>
-					</li>
+						<a className="nav-link" href="#">Characters</a>
+					</li></Link>
+					<Link to="/Planets" style={{ textDecoration: 'none' }}>
 					<li className="nav-item">
-						<a className="nav-link" href="#">Pricing</a>
-					</li>
+						<a className="nav-link" href="#">Planets</a>
+					</li></Link>
 					<li className="nav-item dropdown">
 						<a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Projects with Fetch

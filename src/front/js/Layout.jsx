@@ -19,6 +19,11 @@ import { Home } from "./pages/Home.jsx";
 import { Error404 } from "./pages/Error404.jsx";
 
 
+//starwars 
+import { Characters } from "./component/Characters.jsx";
+import { Planets } from "./component/Planets.jsx";
+
+
 //create your first component
 const Layout = () => {
     //the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -39,6 +44,8 @@ const Layout = () => {
                         <Route element={<EditContact />} path="/EditContact/:contactId" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404 />}  path="*"/>
+                        <Route element={<Characters />} path="/Characters" /> 
+                        <Route element={<Planets/>} path="/Planets" /> 
                     </Routes>
                     <Footer />
                 </ScrollToTop>
