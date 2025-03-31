@@ -47,45 +47,29 @@ export const Login = () => {
   
   // 4
   return (
-    <div className="container">
-      <h1 className="text-primary">Login</h1>
+    <div className="container col-4 mt-5 mb-5 rounded vh-0 p-5">
+      <h1 className="text-primary text-center p-3">Welcome Back!</h1>
+      <p className="text-light text-center">Log in to continue</p>
        <form onSubmit={handleSubmit} className="text-start">
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+        <div className="mb-3  justify-content-center">
+         <div><label htmlFor="exampleInputEmail1" className="form-label text-light col-6">Email address</label></div> 
           <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
             value={email} onChange={handleEmail} />
         </div>
         <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+          <label htmlFor="exampleInputPassword1" className="form-label text-light">Password</label>
           <input type="password" className="form-control" id="exampleInputPassword1"
             value={password} onChange={handlePassword} />
         </div>
-        <div className="mb-3">
-          <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
-          <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
-            value={example} onChange={handleExample}>
-
-          </textarea>
-        </div>
-
-        <select className="form-select" aria-label="Default select example"
-          value={select} onChange={handleSelect}>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-          <option value="sp">Spain</option>
-          <option value="uk">United Kindom</option>
-          <option value="us">United States</option>
-        </select>
-
         <div className="mb-3 form-check">
           <input type="checkbox" className="form-check-input" id="exampleCheck1"
             checked={checkMe} onChange={handleCheckMe} />
-          <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
+          <label className="form-check-label text-light" htmlFor="exampleCheck1">Remember me</label>
         </div>
-
-        <button type="submit" className="btn btn-primary">Submit</button>
-        <button onClick={handleReset} type="reset" className="btn btn-secondary ms-2">Reset</button>
+        <div className="text-center mb-5 p-5">
+        <button type="submit" className="btn btn-primary text-center col-12 m-2">Log in</button>
+        <button onClick={handleReset} type="reset" className="btn btn-secondary ms-2 col-12">Reset</button>
+        </div>
       </form>
     </div>
   )

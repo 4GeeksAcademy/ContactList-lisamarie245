@@ -1,19 +1,19 @@
 import React, { useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/CardStyles.css";
 
 export const CardShips = () => {
     const { store, actions } = useContext(Context);
-    const { id } = useParams();
+    // const { id } = useParams();
 
     const handleErrorImg = (event) => {
         event.target.src = 'https://starwars-visualguide.com/assets/img/placeholder.jpg';
     };
 
-    useEffect(() => {
-        actions.getCardShipsId(id);
-    }, [id]);
+    // useEffect(() => {
+    //     actions.getCardShipsId(id);
+    // }, [id]);
 
     const starship = store.starShipsDetail;
 
@@ -35,7 +35,7 @@ export const CardShips = () => {
                             }}
                         >
                             <img
-                                src={`https://starwars-visualguide.com/assets/img/starships/${id}.jpg`}
+                                src={`https://starwars-visualguide.com/assets/img/starships/${starship.uid}.jpg`}
                                 onError={handleErrorImg}
                                 alt={starship.name}
                                 className="character-image"

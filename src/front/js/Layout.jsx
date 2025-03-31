@@ -17,6 +17,7 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import { Home } from "./pages/Home.jsx";
 import { Error404 } from "./pages/Error404.jsx";
+import { SignUp } from "./pages/SignUp.jsx";
 
 
 //starwars 
@@ -26,6 +27,7 @@ import { Planets } from "./component/Planets.jsx";
 import { CardPlanets } from "./component/CardPlanets.jsx";
 import { Ships } from "./component/Ships.jsx";
 import { CardShips } from "./component/CardShips.jsx";
+import { Login } from "./pages/Login.jsx";
 
 
 //create your first component
@@ -48,6 +50,8 @@ const Layout = () => {
                         <Route element={<EditContact />} path="/EditContact/:contactId" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404 />}  path="*"/>
+                        <Route element={<Login />}  path="login"/>
+                        <Route element={<SignUp />}  path="sign-up"/>
 
                         {/* ///// STARWARS WEBSITES ///  */}
 

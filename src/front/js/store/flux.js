@@ -73,6 +73,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 			//// CONTACTLIST FUNCIONES
+			login: async (dataToSend) => {
+				console.log(dataToSend)
+			},
 
 			// Leer los contactos en la base de datos
 			getContacts: async () => {
