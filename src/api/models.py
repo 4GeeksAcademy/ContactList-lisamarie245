@@ -7,10 +7,10 @@ db = SQLAlchemy()
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(), unique=False, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    username = db.Column(db.String(), unique=False, nullable=True)
     favorites_characters = db.Column(db.String(), unique=False, nullable=True)
     favorites_planets = db.Column(db.String(), unique=False, nullable=True)
 
@@ -20,9 +20,9 @@ class Users(db.Model):
     def serialize(self):
             # Do not serialize the password, its a security breach
         return { "id": self.id,
+                 "username": self.username,
                  "email": self.email,
                  "is_active": self.is_active,
-                 "username": self.username,
                  "favorites_characters": self.favorites_characters,
                  "favorites_planets": self.favorites_planets}
 
@@ -129,11 +129,11 @@ class Planets (db.Model):
                  "terrain": self.terrain}
     
 
-class FavoritesPlanes(db.Model):
+class FavoritesPlanets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user_to = db.relationship("Users", foreign_keys=[user_id], backref=db.backref("favoritesplanets_to", lazy="select"))
-    planet_id = db.Column(db.Integer, db.ForeignKey("planet.id"))
+    planet_id = db.Column(db.Integer, db.ForeignKey("planets.id"))
     planet_to = db.relationship("Planets", foreign_keys=[planet_id], backref=db.backref("favoritesplanets_to", lazy="select"))
 
     def __repr__(self):

@@ -1,15 +1,20 @@
 import React, { useEffect, useContext } from "react";
 import { Context } from "../store/appContext.js"
 import "../../styles/ContactList.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "../../styles/HomeDetails.css";
+
 
 export const ContactList = () => {
 
     const { store, actions } = useContext(Context);
+    
+    const navigate = useNavigate();
+    
 
     const handleEditClick = (contact) => {
         actions.setCurrentContact(contact);
-        Navigate(`/EditContact/${contact.id}`);
+        navigate(`/EditContact/${contact.id}`);
     };
 
 
@@ -20,7 +25,7 @@ export const ContactList = () => {
     // codigo de las tarjetas 
 
     return (
-        <div className="container mt-5 col-10 bg-dark">
+        <div className="container mt-5 col-10 bg-dark vh-100">
             <div className="">
                 <div className="d-flex justify-content-end"><Link to="/AddContact" style={{ textDecoration: 'none' }}> <button type="button" className="btn btn-success mb-3 d-flex justify-contect-end">Add new contact</button></Link></div>
 
