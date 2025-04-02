@@ -21,6 +21,7 @@ def login():
     response_body = {}
     data = request.json
     email = data.get("email", None)
+    print(type(email), email)
     password = request.json.get("password", None)
     row = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active==True)).scalar()
     if not row:
@@ -45,31 +46,6 @@ def protected():
     current_user = get_jwt_identity() # el email
     additional_claims = get_jwt() 
     response_body['message'] = f'logged in as {current_user}'
-    return response_body, 200
-
-
-@api.route('/users', methods = ['GET'])
-def users():
-    response_body = {}
-    if request.method == 'GET':
-        rows = db.session.execute(db.select(Users)).scalars()
-        result = [ row.serialize() for row in rows]
-        response_body['message'] = f'Listado de usuarios'
-        response_body['results'] = result
-        return response_body, 200  
-
-@api.route('/users/<int:id>', methods=['GET'])
-@jwt_required()
-def user_get(id):
-    response_body = {}
-    additional_claims = get_jwt()
-    print(id)
-    print(additional_claims)
-    if id != additional_claims['user_id']:
-        response_body['message'] = 'No tiene autorizacion'
-        return response_body, 401
-    row = db.session.execute(db.select(Users).where(Users.id == id)).scalar()
-    response_body['results'] = row.serialize()
     return response_body, 200
 
 
@@ -126,14 +102,6 @@ def post(id):
         return response_body, 200
     
 
-
-@api.route('/hello', methods=['GET'])
-def handle_hello():
-    response_body = {}
-    response_body['message'] = "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    return response_body, 200
-
-
 # Todas las publicaciones de un usuario 
 
 @api.route('/users/<int:user_id>/posts', methods=['GET'])
@@ -149,17 +117,9 @@ def posts_comments(post_id):
     return response_body, 200
 
 
-@api.route('/people', methods=['GET'])
-def people():
-    response_body = {}
-    url = 'https://swapi.tech/api/people/'
-    response = requests.get(url)
-    if response.status_code == 200: 
-        data = response.json() 
-        response_body['results'] = data 
-        return response_body, 200
-    response_body['message'] = 'Algun error'
-    return response_body, 400
+
+
+
 
 
 
