@@ -8,8 +8,11 @@ from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
+from api.starwars import starwars_api
+from api.users import users_api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager
 # from models import Person
 
 
@@ -21,8 +24,7 @@ app.url_map.strict_slashes = False
 # Database condiguration
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace(
-        "postgres://", "postgresql://")
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,8 +33,12 @@ db.init_app(app)
 # Other configuration
 setup_admin(app)   # Add the admin
 setup_commands(app)  # Add the admin
-app.register_blueprint(api, url_prefix='/api')  # Add all endpoints form the API with a "api" prefix
-
+app.register_blueprint(api, url_prefix='/api') 
+app.register_blueprint(starwars_api, url_prefix='/starwarsApi')  # Add all endpoints form the API with a "api" prefix
+app.register_blueprint(users_api, url_prefix='/usersApi') 
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] =os.getenv("JWT_SECRET_KEY")
+jwt = JWTManager(app)
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
@@ -61,3 +67,8 @@ def serve_any_other_file(path):
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
+
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+# jwt = JWTManager(app) 
