@@ -5,6 +5,7 @@ export const SignUp = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
 
     const handleEmail = (event) => {
         setEmail(event.target.value)
@@ -14,13 +15,18 @@ export const SignUp = () => {
         setPassword(event.target.value)
     };
 
+    const handleUsername = (event) => {
+        setUsername(event.target.value)
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const dataToSend = {
+            username: username,
             email: email,
             password: password
         };
-        console.log(dataToSend); 
+        console.log(dataToSend);
     };
 
 
@@ -30,6 +36,11 @@ export const SignUp = () => {
             <h4 className="text-light text-center">Create your account</h4>
             <form onSubmit={handleSubmit} className="p-3">
                 <div className="mb-3">
+                    <label for="exampleInputUsername1" className="form-label text-light">Username</label>
+                    <input type="username" className="form-control" id="exampleInputUsername1" aria-describedby="usernameHelp"
+                        value={username} onChange={handleUsername} />
+                </div>
+                <div className="mb-3">
                     <label for="exampleInputEmail1" className="form-label text-light">Email address</label>
                     <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
                         value={email} onChange={handleEmail} />
@@ -37,7 +48,7 @@ export const SignUp = () => {
                 <div className="mb-3">
                     <label for="exampleInputPassword1" className="form-label text-light">Password</label>
                     <input type="password" className="form-control" id="exampleInputPassword1"
-                        value={password}  onChange={handlePassword} />
+                        value={password} onChange={handlePassword} />
                 </div>
                 <div className="mb-3 form-check">
                     <input type="checkbox" className="form-check-input" id="exampleCheck1" />

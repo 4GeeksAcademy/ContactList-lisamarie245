@@ -8,7 +8,7 @@ export const Home = () => {
 	return (
 		<div className="home container-fluid text-center my-5 bg-dark mb-3">
 			<div className="cover-container d-flex w-75 p-4 mx-auto flex-column">
-			<img class="d-block w-100" src="https://i.imgur.com/YodJeJG.png" alt="Star Wars timeline" />
+			<img className="d-block w-100" src="https://i.imgur.com/YodJeJG.png" alt="Star Wars timeline" />
 			</div>
 		</div>
 	);

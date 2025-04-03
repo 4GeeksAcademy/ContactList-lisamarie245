@@ -1,3 +1,4 @@
+import { json } from "react-router-dom";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	const agendaSlug = "contactList-lisamarie";
@@ -5,23 +6,11 @@ const getState = ({ getStore, getActions, setStore }) => {
     const urlBaseContacts = `https://playground.4geeks.com/contact/agendas/${agendaSlug}/contacts`;
 	return {
 		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				},
-			],
-
 			// CLAVES del CONTACTLIST 
 			currentContact: {},
 			contacts: [],
+			user: {}, 
+			isLogged: false,
 			formData: {
 				name: "",
 				phone: "",
@@ -32,7 +21,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			agenda: {
 				slug: "contactList-lisamarie",
 			  },
-
+				alert: {
+					show: false,
+					type: "info",
+					message: ""
+				},
 			/////// STARWARS VARIABLES /////////
 
 			urlBase: 'https://www.swapi.tech/api/',
@@ -47,9 +40,72 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
+			showAlert: (message, type = "success") => {
+				setStore({
+					alert: {
+						show: true,
+						type,
+						message
+					}
+				});
+				// Ocultar después de 5 segundos
+				setTimeout(() => getActions().hideAlert(), 5000);
+			},
+			hideAlert: () => {
+				setStore({
+					alert: {
+						...getStore().alert,
+						show: false
+					}
+				});
+			},
 			//// CONTACTLIST FUNCIONES
 			login: async (dataToSend) => {
 				console.log(dataToSend)
+
+				const uri = `${process.env.BACKEND_URL}/api/login`;
+				console.log(uri)
+				const options = {
+					method: 'POST',
+					headers: { 
+						"Content-Type": "application/json"
+ 					},
+					body: JSON.stringify(dataToSend)
+				}
+				const response = await fetch(uri, options);
+
+				if (!response.ok) { 
+					const errorMsg = response.status === 401 
+						? "Email o contraseña incorrectos" 
+						: "Error en el servidor";
+					
+					getActions().showAlert(errorMsg, "danger");
+					return;
+				} 
+				
+				const data = await response.json();
+				localStorage.setItem('token', data.access_token)
+				getActions().showAlert("Login exitoso", "success");
+				setStore({
+					isLogged: true,
+					user: data.results
+				})
+
+			},
+			access_protected: async () => {
+				const uri = `${process.env.BACKEND_URL}/api/login`;
+				const options = { 
+					method: 'GET'
+				}
+				 
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return
+				}
+
+				const data = await response.json()
+				getActions().showAlert("Ruta protegida", "success");
 			},
 
 			// Leer los contactos en la base de datos
