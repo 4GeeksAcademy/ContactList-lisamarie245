@@ -167,47 +167,60 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().showAlert("Logout successful", "danger");
 				navigate('/login');
 			},
-			getUser: async (userId, navigate) => {
-				if (!token || !userId) {
-					navigate('/login');
-					return;
-				}
-				const uri = `${process.env.BACKEND_URL}/usersApi/users/${userId}`;
+			getUser: async (userId) => {
 				const token = localStorage.getItem('token');
-				const options = {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${token}`
-					}
-				};
-				const response = await fetch(uri, options);
-
-				if (response.status === 401 || response.status === 403) {
-					localStorage.removeItem('token');
-					navigate('/login');
-					return;
+				if (!token || !userId) {
+				  getActions().showAlert("Debes iniciar sesión primero", "danger");
+				  return false;
 				}
-				const data = await response.json()
-				console.log(data)
+			
+				const uri = `${process.env.BACKEND_URL}/usersApi/users/${userId}`;
+				const options = {
+				  method: 'GET',
+				  headers: {
+					Authorization: `Bearer ${token}`
+				  }
+				};
+			
+				try {
+				  const response = await fetch(uri, options);
+				  if (response.status === 401 || response.status === 403) {
+					throw new Error('Sesión expirada');
+				  }
+				  if (!response.ok) {
+					throw new Error('Error al obtener datos del usuario');
+				  }
+				  const data = await response.json();
+				  getActions().showAlert("Datos de usuario obtenidos", "success");
+				  return data;
+				} catch (error) {
+				  console.error("Error:", error.message);
+				  getActions().showAlert(error.message, "danger");
+				  return false;
+				}
 			},
-			accessProtected: async (navigate) => {
+			accessProtected: async () => {
 				const uri = `${process.env.BACKEND_URL}/api/protected`;
 				const options = {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem('token')}`
-					}
+				  method: 'GET',
+				  headers: {
+					Authorization: `Bearer ${localStorage.getItem('token')}`
+				  }
+				};
+			
+				try {
+				  const response = await fetch(uri, options);
+				  if (!response.ok) {
+					throw new Error('Token inválido o expirado');
+				  }
+				  const data = await response.json();
+				  getActions().showAlert("El token es válido para esta ruta protegida", "success");
+				  return true;
+				} catch (error) {
+				  console.error('Error:', error.message);
+				  getActions().showAlert(error.message, "danger");
+				  return false;
 				}
-
-				const response = await fetch(uri, options);
-				if (!response.ok) {
-					console.log('Error', response.status, response.statusText);
-					navigate("/login")
-					return
-				}
-
-				const data = await response.json()
-				getActions().showAlert("El token es válido para esta ruta protegida", "success");
 			},
 			signUp: async (dataToSend) => {
 				const uri = `${process.env.BACKEND_URL}/usersApi/users`;
