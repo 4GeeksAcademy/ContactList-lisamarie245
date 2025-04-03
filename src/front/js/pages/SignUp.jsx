@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 
 export const SignUp = () => {
 
+    const {store, actions} = useContext(Context);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const navigate = useNavigate();
 
     const handleEmail = (event) => {
         setEmail(event.target.value)
@@ -26,7 +30,8 @@ export const SignUp = () => {
             email: email,
             password: password
         };
-        console.log(dataToSend);
+        actions.signUp(dataToSend)
+        navigate("/login")
     };
 
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";  // 1 importar react y hooks
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext"
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,6 @@ export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkMe, setCheckMe] = useState(false);
-  // const [username, setUsername] = useState('');
 
   const handleEmail = (event) => {
 
@@ -18,14 +17,12 @@ export const Login = () => {
   }
   const handlePassword = (event) => { setPassword(event.target.value) };
   const handleCheckMe = (event) => { setCheckMe(event.target.checked) };
-  // const handleUsername = (event) => { setUsername(event.target.value) };
   const navigate = useNavigate()
 
   const handleReset = () => {
     setEmail('');
     setPassword('');
     setCheckMe(false);
-    // setUsername('');
   }
 
   const handleSubmit = async (event) => {
@@ -37,11 +34,8 @@ export const Login = () => {
     if (store.isLogged){
        navigate("/protected")
     }
-
   }
 
-
-  // 4
   return (
     <div className="container col-4 mt-5 mb-5 rounded vh-0 p-5">
       <h1 className="text-primary text-center p-3">Welcome Back!</h1>
