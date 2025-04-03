@@ -6,12 +6,14 @@ import requests
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt
+from flask_jwt_extended import create_access_token
+
 
 users_api = Blueprint('usersApi', __name__)
 CORS(users_api ) 
 
 
-@users_api.route('/users', methods = ['GET'])
+@users_api.route('/users', methods = ['GET', 'POST'])
 def users():
     response_body = {}
     if request.method == 'GET':
@@ -20,6 +22,27 @@ def users():
         response_body['message'] = f'Listado de usuarios'
         response_body['results'] = result
         return jsonify(response_body), 200  
+    if request.method == 'POST': 
+        response_body = {}
+        data = request.json
+        if not data.get('email') or not data.get('password'):
+            return jsonify({"message": "Email, username y password son requeridos"}), 400
+        new_user = Users(username=data.get('username'),
+                    email=data.get('email'),
+                    password=data.get('password'),
+                    is_active=True)
+        rowdb = db.session.execute(db.select(Users).where(Users.username == data.get('username'), Users.password == data.get('password'))).scalar()
+        if rowdb:
+            response_body['message'] = f'El usuario ya existe'
+            return response_body, 401
+        db.session.add(new_user)
+        db.session.commit()
+        claims = {"user_id": new_user.id, "email": new_user.email}
+        access_token = create_access_token(identity=new_user.email, additional_claims=claims)
+        response_body['message'] = f'El usuario se ha agregado exitosamente.'
+        response_body['access_token'] = access_token
+        response_body['results'] = new_user.serialize()
+        return response_body, 201 
 
 @users_api.route('/users/<int:id>', methods=['GET'])
 @jwt_required()
@@ -57,8 +80,7 @@ def favorites():
         })
     response_body = {
         "planets": planets_list,
-        "characters": characters_list
-    }
+        "characters": characters_list }
     return jsonify(response_body), 200
 
 @users_api.route('/favorite/planet/<int:planet_id>', methods=['POST', 'DELETE'])

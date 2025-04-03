@@ -9,16 +9,18 @@ export const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3 py-2">
             <div className="container-fluid">
-                <Link to="/" className="navbar-brand me-5">
+                <Link to="/" className="navbar-brand me-3">
                     <img
                         height="50"
-                        className="img-fluid"
                         src="https://i.imgur.com/I8IEYg0.png"
                         alt="Star Wars Logo"
-                        style={{ filter: "brightness(0.9)" }}
+                        style={{
+                            filter: "brightness(0.9)",
+                            borderRadius: "4px",
+                            objectFit: "fit"
+                        }}
                     />
                 </Link>
-
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -32,12 +34,12 @@ export const Navbar = () => {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav mx-auto">
+                    <ul className="navbar-nav mx-auto" style={{ gap: "0.25rem" }}>
                         {["Characters", "Planets", "Ships", "ContactList"].map((item, index) => (
                             <li className="nav-item mx-2" key={index}>
-                                <Link 
+                                <Link
                                     className="nav-link text-light hover-glow px-3"
-                                    to={`/${item === "Ships" ? "Starships" : item}`}
+                                    to={`/${item === "ships" ? "Starships" : item}`}
                                     style={{
                                         fontWeight: 500,
                                         letterSpacing: "0.5px",
@@ -51,10 +53,10 @@ export const Navbar = () => {
                         ))}
                     </ul>
 
-                    <div className="d-flex align-items-center ms-auto">
-                        <Dropdown className="me-3">
-                            <Dropdown.Toggle 
-                                variant="outline-warning" 
+                    <div className="d-flex align-items-center ms-auto" style={{ gap: "0.25rem" }}>
+                        <Dropdown className="me-2">
+                            <Dropdown.Toggle
+                                variant="outline-warning"
                                 className="d-flex align-items-center position-relative"
                                 style={{
                                     borderRadius: "20px",
@@ -78,16 +80,16 @@ export const Navbar = () => {
                                 <Dropdown.Divider className="bg-secondary" />
                                 {store.favorites?.length > 0 ? (
                                     store.favorites.map((fav, index) => (
-                                        <Dropdown.Item 
-                                            key={index} 
+                                        <Dropdown.Item
+                                            key={index}
                                             className="d-flex justify-content-between align-items-center py-2"
                                         >
-                                            <span className="text-truncate" style={{ maxWidth: "180px" }}>{fav}</span>
-                                            <button 
+                                            <span className="text-truncate" style={{ maxWidth: "180px" }}>{fav.name}</span>
+                                            <button
                                                 className="btn btn-sm btn-outline-danger p-1"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    actions.removeFavorites(fav);
+                                                    actions.removeFavorites(fav.id);
                                                 }}
                                                 style={{ width: "24px", height: "24px" }}
                                             >
@@ -102,11 +104,10 @@ export const Navbar = () => {
                                 )}
                             </Dropdown.Menu>
                         </Dropdown>
-
                         {store.isLogged ? (
                             <Dropdown>
-                                <Dropdown.Toggle 
-                                    variant="outline-light" 
+                                <Dropdown.Toggle
+                                    variant="outline-light"
                                     className="d-flex align-items-center user-toggle"
                                     style={{
                                         borderRadius: "20px",
@@ -115,27 +116,31 @@ export const Navbar = () => {
                                         background: "rgba(255, 255, 255, 0.1)"
                                     }}
                                 >
-                                    <img 
-                                        src={store.usuario?.image_url || "https://i.imgur.com/24t1SYU.jpeg"} 
-                                        alt="Profile" 
-                                        className="rounded-circle me-2" 
-                                        width="32" 
-                                        height="32" 
-                                        style={{ objectFit: "cover" }}
+                                    <img
+                                        src={store.usuario?.image_url || "https://i.imgur.com/24t1SYU.jpeg"}
+                                        alt="Profile"
+                                        className="rounded-circle me-2"
+                                        style={{
+                                            width: "30px",
+                                            height: "30px",
+                                            objectFit: "cover",
+                                            minWidth: "30px",
+                                            flexShrink: 0
+                                        }}
                                     />
                                     <span className="d-none d-lg-inline" style={{ fontWeight: 500 }}>
-                                        {store.usuario?.username || "User"}
+                                        {store.user?.username || "User"}
                                     </span>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="dropdown-menu-dark" align="end">
-                                    <Dropdown.Item as={Link} to="/user-profile" className="d-flex align-items-center">
+                                    <Dropdown.Item as={Link} to="/protected" className="d-flex align-items-center">
                                         <i className="fas fa-user-circle me-2"></i>Profile
                                     </Dropdown.Item>
                                     <Dropdown.Divider className="bg-secondary" />
-                                    <Dropdown.Item 
-                                        as={Link} 
-                                        to="/" 
-                                        onClick={() => actions.logout()} 
+                                    <Dropdown.Item
+                                        as={Link}
+                                        to="/"
+                                        onClick={() => actions.logout()}
                                         className="text-danger d-flex align-items-center"
                                     >
                                         <i className="fas fa-sign-out-alt me-2"></i>Logout
@@ -143,10 +148,10 @@ export const Navbar = () => {
                                 </Dropdown.Menu>
                             </Dropdown>
                         ) : (
-                            <div className="d-flex">
+                            <div className="d-flex" style={{ gap: "0.5rem" }}>
                                 <Link to="/login" className="nav-link">
-                                    <button 
-                                        className="btn btn-outline-light me-2" 
+                                    <button
+                                        className="btn btn-outline-light"
                                         style={{
                                             borderRadius: "20px",
                                             padding: "6px 20px",
@@ -158,8 +163,8 @@ export const Navbar = () => {
                                     </button>
                                 </Link>
                                 <Link to="/sign-up" className="nav-link">
-                                    <button 
-                                        className="btn btn-warning text-dark" 
+                                    <button
+                                        className="btn btn-warning text-dark"
                                         style={{
                                             borderRadius: "20px",
                                             padding: "6px 20px",

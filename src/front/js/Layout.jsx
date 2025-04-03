@@ -3,31 +3,29 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import injectContext from "./store/appContext";
 
 // custom component 
-
 import ScrollToTop from "./component/ScrollToTop.jsx";
 import { BackendURL } from "./component/BackendURL.jsx";
 import { Navbar } from "./component/Navbar.jsx";
 import { Footer } from "./component/Footer.jsx";
-import { ContactList } from "./component/ContactList.jsx";
-import { AddContact } from "./component/AddContact.jsx";
-import { EditContact } from "./component/EditContact.jsx";
+import { ContactList } from "./pages/ContactList.jsx";
+import { AddContact } from "./pages/AddContact.jsx";
+import { EditContact } from "./pages/EditContact.jsx";
 
-
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import { Home } from "./pages/Home.jsx";
-import { Error404 } from "./pages/Error404.jsx";
+import { Error404 } from "./component/Error404.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
+import { Alert } from "./component/Alert.jsx";
 
 
 //starwars 
-import { Characters } from "./component/Characters.jsx";
-import { CardCharacters } from "./component/CardCharacters.jsx";
-import { Planets } from "./component/Planets.jsx";
-import { CardPlanets } from "./component/CardPlanets.jsx";
-import { Ships } from "./component/Ships.jsx";
-import { CardShips } from "./component/CardShips.jsx";
+import { Characters } from "./pages/Characters.jsx";
+import { CardCharacters } from "./pages/CardCharacters.jsx";
+import { Planets } from "./pages/Planets.jsx";
+import { CardPlanets } from "./pages/CardPlanets.jsx";
+import { Ships } from "./pages/Ships.jsx";
+import { CardShips } from "./pages/CardShips.jsx";
 import { Login } from "./pages/Login.jsx";
+import { Jumbotron } from "./component/Jumbotron.jsx";
 
 
 //create your first component
@@ -42,13 +40,13 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    <Alert />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
+                        <Route element={<Jumbotron />} path="/protected" />
                         <Route element={<ContactList />} path="/ContactList" /> 
                         <Route element={<AddContact />} path="/AddContact" /> 
                         <Route element={<EditContact />} path="/EditContact/:contactId" />
-                        <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404 />}  path="*"/>
                         <Route element={<Login />}  path="login"/>
                         <Route element={<SignUp />}  path="sign-up"/>

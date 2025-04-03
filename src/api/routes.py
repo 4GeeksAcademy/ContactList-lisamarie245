@@ -26,7 +26,7 @@ def login():
     row = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active==True)).scalar()
     if not row:
         response_body['message'] = 'User not found'
-        return response_body, 404
+        return response_body, 401
     user = row.serialize()
     claims = {'user_id': user['id'], 
               'is_active': user['is_active']}
@@ -45,7 +45,7 @@ def protected():
     response_body = {}
     current_user = get_jwt_identity() # el email
     additional_claims = get_jwt() 
-    response_body['message'] = f'logged in as {current_user}'
+    response_body['message'] = f' Token válido, logged in as {current_user}'
     return response_body, 200
 
 

@@ -21,6 +21,7 @@ export const CardCharacters = () => {
     }, [id]);
 
     const character = store.starCharacterDetail;
+    
 
 
     if (!character) {
